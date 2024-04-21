@@ -75,6 +75,7 @@ const Header = () => {
           <Link to="/" />
         </Logo>
         <NavLinks>
+          <Link to="/nearby">Nearby</Link>
           <Link to="/vehicles">Vehicles</Link>
           <Link to="/services">Services</Link>
           <Link to="/dashboard">Dashboard</Link>
