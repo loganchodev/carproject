@@ -209,7 +209,9 @@ function MapComponent() {
                     <div>
                       <h3>{selectedPlace.name}</h3>
                       <p>{selectedPlace.vicinity}</p>
-                      <p>연락처: {selectedPlace.contact}</p>
+                      {selectedPlace.formatted_phone_number && (
+                        <p>연락처: {selectedPlace.formatted_phone_number}</p>
+                      )}
                     </div>
                   </InfoWindow>
                 )}
@@ -243,13 +245,9 @@ function MapComponent() {
                     onClick={() => handleMarkerClick(place)}
                   >
                     <PlaceName>{place.name}</PlaceName>
-                    <PlaceDetails>{place.vicinity}</PlaceDetails>
                     <PlaceDetails>
-                      거리: {Math.round(place.distance)}m
+                      {place.vicinity} | 거리: {Math.round(place.distance)}m
                     </PlaceDetails>
-                    {place.contact && (
-                      <PlaceDetails>연락처: {place.contact}</PlaceDetails>
-                    )}
                   </PlaceItem>
                 ))}
               </PlaceList>
