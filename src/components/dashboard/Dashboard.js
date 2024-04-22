@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FiHome, FiList, FiTool, FiSettings, FiChevronRight, FiChevronLeft } from 'react-icons/fi'; 
+import { FiHome, FiList, FiTool, FiSettings, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import SideNav from '../sidenav/SideNav';
 import NavItem from '../sidenav/NavItem';
 import ToggleButton from '../sidenav/ToggleButton';
@@ -16,23 +16,35 @@ const Dashboard = () => {
   const [selectedImage, setSelectedImage] = useState('/images/dashboard.jpg'); 
   const [activeNav, setActiveNav] = useState('/dashboard');
 
+  const navItems = [
+    { path: '/dashboard', image: '/images/dashboard.jpg', text: 'Dashboard', icon: <FiHome /> },
+    { path: '/vehiclelist', image: '/images/vehicle-1.jpg', text: 'Vehicle List', icon: <FiList /> },
+    { path: '/maintenance', image: '/images/maintenance-1.jpg', text: 'Maintenance', icon: <FiTool /> },
+    { path: '/settings', image: '/images/setting-1.jpg', text: 'Settings', icon: <FiSettings /> }
+  ];
+
   const handleNavClick = (path, image, event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     setSelectedImage(image);
     setActiveNav(path);
   };
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleSidebar = () => setIsOpen(!isOpen);
 
   return (
     <Container>
       <SideNav isOpen={isOpen} image={selectedImage}>
-        <NavItem to="/dashboard" className={activeNav === '/dashboard' ? 'active' : ''} isOpen={isOpen} onClick={(e) => handleNavClick('/dashboard', '/images/dashboard.jpg', e)}><FiHome /> {isOpen && 'Dashboard'}</NavItem>
-        <NavItem to="/vehiclelist" className={activeNav === '/vehiclelist' ? 'active' : ''} isOpen={isOpen} onClick={(e) => handleNavClick('/vehiclelist', '/images/vehicle-1.jpg', e)}><FiList /> {isOpen && 'Vehicle List'}</NavItem>
-        <NavItem to="/maintenance" className={activeNav === '/maintenance' ? 'active' : ''} isOpen={isOpen} onClick={(e) => handleNavClick('/maintenance', '/images/maintenance-1.jpg', e)}><FiTool /> {isOpen && 'Maintenance'}</NavItem>
-        <NavItem to="/settings" className={activeNav === '/settings' ? 'active' : ''} isOpen={isOpen} onClick={(e) => handleNavClick('/settings', '/images/setting-1.jpg', e)}><FiSettings /> {isOpen && 'Settings'}</NavItem>
+        {navItems.map(item => (
+          <NavItem
+            key={item.path}
+            to={item.path}
+            className={activeNav === item.path ? 'active' : ''}
+            isOpen={isOpen}
+            onClick={(e) => handleNavClick(item.path, item.image, e)}
+          >
+            {item.icon} {isOpen && item.text}
+          </NavItem>
+        ))}
         <ToggleButton onClick={toggleSidebar}>
           {isOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
         </ToggleButton>
