@@ -119,7 +119,7 @@ function MapComponent() {
         });
       },
       () => {
-        console.error("위치 조회에 실패 하였습니다.");
+        console.error("위치 조회에 실패 했습니다.");
       }
     );
   }, []);
