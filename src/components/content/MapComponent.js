@@ -75,7 +75,7 @@ const PlaceDetails = styled.div`
 `;
 
 const initialState = {
-  location: { lat: 37.5665, lng: 126.978 },
+  location: null, 
   places: [],
   loading: true,
   selectedPlace: null,
@@ -119,10 +119,7 @@ function MapComponent() {
         });
       },
       () => {
-        dispatch({
-          type: "SET_LOCATION",
-          payload: { lat: 37.5665, lng: 126.978 },
-        });
+        console.error("위치 조회에 실패 하였습니다.");
       }
     );
   }, []);
@@ -157,7 +154,9 @@ function MapComponent() {
 
   const onMapLoad = (map) => {
     mapRef.current = map;
-    loadPlaces(map, map.getCenter());
+    if (location) {
+      loadPlaces(map, location);
+    }
   };
 
   const handleMarkerClick = (place) => {
@@ -169,7 +168,7 @@ function MapComponent() {
   };
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && location) {
       loadPlaces(mapRef.current, location);
     }
   }, [selectedCategory, loading, location]);
@@ -190,7 +189,7 @@ function MapComponent() {
                 center={location}
                 zoom={15}
                 onLoad={onMapLoad}
-                onClick={(e) => loadPlaces(mapRef.current, e.latLng)}
+                onClick={(e) => location && loadPlaces(mapRef.current, e.latLng)}
               >
                 {places.map((place, index) => (
                   <Marker
@@ -209,9 +208,6 @@ function MapComponent() {
                     <div>
                       <h3>{selectedPlace.name}</h3>
                       <p>{selectedPlace.vicinity}</p>
-                      {selectedPlace.formatted_phone_number && (
-                        <p>연락처: {selectedPlace.formatted_phone_number}</p>
-                      )}
                     </div>
                   </InfoWindow>
                 )}
