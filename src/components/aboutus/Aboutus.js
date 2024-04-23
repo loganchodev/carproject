@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
-import CommentMain from '../comment/CommentMain';
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -23,17 +22,19 @@ const IntroContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
+  height: 200vh;
   margin: auto;
   overflow: hidden;
 `;
 
 const TitleBackground = styled.div`
   background-image: linear-gradient(
-      rgba(0, 0, 0, 0.5), 
+      rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
-    ), url('./images/manager.png');
+    ),
+    url('./images/manager.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -42,7 +43,7 @@ const TitleBackground = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-bottom: 500px;
+  margin-bottom: 20px;
   padding-right: 20%;
   animation: ${scrollMove} 2s forwards;
 `;
@@ -53,7 +54,7 @@ const TitleStyled = styled.span`
   animation: ${bounce} 0.5s forwards;
   animation-delay: ${props => props.delay}s;
   animation-iteration-count: 1;
-  font-size: 32px;
+  font-size: 48px;
   color: #fff;
 `;
 
@@ -72,7 +73,7 @@ const Title = ({ text }) => {
 
 const SubTitle = styled.h2`
   font-size: 24px;
-  color: #666;
+  color: #333;
   margin-top: 30px;
   text-align: center;
 `;
@@ -89,34 +90,19 @@ const Paragraph = styled.p`
 const StyledImage = styled.img`
   width: 100%;
   max-width: 800px;
-  margin-top: ${props => props.marginTop}px; 
+  margin-top: ${props => props.marginTop}px;
   opacity: 0;
-  animation: ${props => props.inView ? css`${fadeIn} 1s forwards` : 'none'};
+  animation: ${props => (props.inView ? css`${fadeIn} 1s forwards` : 'none')};
   border-radius: 8px;
 `;
 
 const Aboutus = () => {
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.5
+    threshold: 0.5,
   });
 
   const [scrollY, setScrollY] = useState(0);
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      username: "user1",
-      postDate: "2024-01-01",
-      text: "이게 댓글이다.",
-      replies: [
-        {
-          username: "replyUser1",
-          postDate: "2024-01-02",
-          text: "이건 대댓글이다.",
-        },
-      ],
-    },
-  ]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,16 +115,41 @@ const Aboutus = () => {
   return (
     <IntroContainer>
       <TitleBackground>
-        <Title text="Welcome To MyCarLong" />
+        <Title text="About Us" />
       </TitleBackground>
-      {comments.map((comment) => (
-        <CommentMain key={comment.id} comment={comment} /> 
-      ))}
-      <SubTitle>Our Goal</SubTitle>
+      <SubTitle>Welcome to MyCarLong</SubTitle>
       <Paragraph>
-        모든 사람이 자동차 서비스를 쉽게 접근할 수 있도록 하여, 번거로움 없이 근처의 최고 옵션을 찾을 수 있도록 하는 것입니다.
+        Pexels provides high quality and completely free stock photos licensed under the Pexels license.
+        All photos are nicely tagged, searchable and also easy to discover through our discover pages.
       </Paragraph>
-      <StyledImage ref={ref} inView={inView} src="/path/to/your/image1.jpg" alt="Service Image" marginTop={-scrollY / 3} />
+      <SubTitle>Photos</SubTitle>
+      <Paragraph>
+        We have hundreds of thousands free stock photos and every day new high resolution photos will be added.
+        All photos are hand-picked from photos uploaded by our users or sourced from free image websites.
+        We make sure all published pictures are high-quality and licensed under the Pexels license.
+      </Paragraph>
+      <SubTitle>Photo Sources</SubTitle>
+      <Paragraph>
+        Only free images from our community of photographers are added to our photo database.
+        We constantly try to deliver as many high quality free stock photos as possible to the creatives who use our website.
+      </Paragraph>
+      <SubTitle>Team</SubTitle>
+      <Paragraph>
+        Pexels is run by Bruno Joseph, Ingo Joseph and Daniel Frese. Bruno and Ingo co-founded Pexels together in 2014 and Daniel joined them in 2015.
+      </Paragraph>
+      <SubTitle>Mission</SubTitle>
+      <Paragraph>
+        We help millions of designers, writers, artists, programmers and other creators to get access to beautiful photos that they can use freely which empowers them to create amazing products, designs, stories, websites, apps, art and other work. We call it: "Empowering Creators"
+      </Paragraph>
+      <SubTitle>Contribute</SubTitle>
+      <Paragraph>
+        Upload your own pictures to support the Pexels community:
+        <br />
+        <button>Start Uploading</button>
+      </Paragraph>
+      <Paragraph>
+        And don't forget to share, like and follow Pexels on Instagram, Facebook and X ;)
+      </Paragraph>
     </IntroContainer>
   );
 };

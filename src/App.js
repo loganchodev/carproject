@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import GlobalStyles from './assets/styles/GlobalStyles';
 import Header from './components/common/Header';
@@ -13,27 +13,43 @@ import MyPage from './components/auth/MyPage';
 import PasswordEntry from './components/auth/PasswordEntry';
 import Nearby from './components/nearby/Nearby';
 import Aboutus from './components/aboutus/Aboutus';
+import Start from './components/start/Start'; 
 
 function App() {
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []); 
+
   const isAuthenticated = true; 
 
   return (
     <Router>
       <GlobalStyles />
       <Header />
-      <VideoBackground />
-      <Slogan />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/aboutus" element={<Aboutus />} />
-        <Route path="/nearby" element={<Nearby />} />
-        <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} isAuthenticated={isAuthenticated} />} />
-        <Route path="/mypage" element={<PrivateRoute element={<PasswordEntry />} isAuthenticated={isAuthenticated} />} />
-        <Route path="/userinfo" element={<PrivateRoute element={<MyPage />} isAuthenticated={isAuthenticated} />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      <Footer />
+      {loading && <Start />} 
+      {!loading && ( 
+        <>
+          <VideoBackground />
+          <Slogan />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/aboutus" element={<Aboutus />} />
+            <Route path="/nearby" element={<Nearby />} />
+            <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/mypage" element={<PrivateRoute element={<PasswordEntry />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/userinfo" element={<PrivateRoute element={<MyPage />} isAuthenticated={isAuthenticated} />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <Footer />
+        </>
+      )}
     </Router>
   );
 }
