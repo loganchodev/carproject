@@ -11,18 +11,22 @@ const Container = styled.div`
   display: flex;
   height: 100vh;
   overflow: hidden;
-  background: white;
+  background: #f0f0f0;  
 `;
 
 const ContentArea = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  background: white;
+  border-left: 1px solid #e0e0e0; 
 `;
 
 const MapContainer = styled.div`
+  flex-grow: 1; 
   background: white;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; 
 `;
 
 const Nearby = () => {

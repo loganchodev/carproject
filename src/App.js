@@ -12,6 +12,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import MyPage from './components/auth/MyPage';
 import PasswordEntry from './components/auth/PasswordEntry';
 import Nearby from './components/nearby/Nearby';
+import Aboutus from './components/aboutus/Aboutus';
 
 function App() {
   const isAuthenticated = true; 
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/nearby" element={<Nearby />} />
         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} isAuthenticated={isAuthenticated} />} />
         <Route path="/mypage" element={<PrivateRoute element={<PasswordEntry />} isAuthenticated={isAuthenticated} />} />

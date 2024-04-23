@@ -75,7 +75,7 @@ const PlaceDetails = styled.div`
 `;
 
 const initialState = {
-  location: null, 
+  location: null,
   places: [],
   loading: true,
   selectedPlace: null,
@@ -119,7 +119,7 @@ function MapComponent() {
         });
       },
       () => {
-        console.error("위치 조회에 실패 했습니다.");
+        console.error("Failed to get user's location");
       }
     );
   }, []);
@@ -145,6 +145,7 @@ function MapComponent() {
               new window.google.maps.LatLng(center),
               new window.google.maps.LatLng(place.geometry.location)
             ),
+            rating: place.rating ? place.rating : "No rating",
           }))
           .sort((a, b) => a.distance - b.distance);
         dispatch({ type: "SET_PLACES", payload: sortedResults });
@@ -189,7 +190,9 @@ function MapComponent() {
                 center={location}
                 zoom={15}
                 onLoad={onMapLoad}
-                onClick={(e) => location && loadPlaces(mapRef.current, e.latLng)}
+                onClick={(e) =>
+                  location && loadPlaces(mapRef.current, e.latLng)
+                }
               >
                 {places.map((place, index) => (
                   <Marker
@@ -242,7 +245,8 @@ function MapComponent() {
                   >
                     <PlaceName>{place.name}</PlaceName>
                     <PlaceDetails>
-                      {place.vicinity} | 거리: {Math.round(place.distance)}m
+                      {place.vicinity} | 거리: {Math.round(place.distance)}m |
+                      평점: {place.rating}
                     </PlaceDetails>
                   </PlaceItem>
                 ))}
