@@ -41,9 +41,10 @@ const TitleBackground = styled.div`
   height: 270px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  animation: ${scrollMove} 2s forwards;
+  justify-content: flex-end;
   margin-bottom: 500px;
+  padding-right: 20%;
+  animation: ${scrollMove} 2s forwards;
 `;
 
 const TitleStyled = styled.span`

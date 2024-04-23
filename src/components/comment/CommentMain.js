@@ -11,10 +11,9 @@ const CommentMain = () => {
       text: "이게 댓글이다 얼마나 길게 쓸 수 있나 볼까. 얼마나 길게 쓸 수 있나 볼까.얼마나 길게 쓸 수 있나 볼까.얼마나 길게 쓸 수 있나 볼까.얼마나 길게 쓸 수 있나 볼까.얼마나 길게 쓸 수 있나 볼까.",
       images: [
         "./images/dashboard.jpg",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150"
+        "./images/vehicle-1.jpg",
+        "./images/setting-1.jpg",
+        "./images/introduction-3.jpg",
       ],
       replies: [
         {

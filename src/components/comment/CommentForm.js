@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios'; // Axios import
 
 const FormContainer = styled.form`
   width: 100%;
@@ -24,18 +25,18 @@ const TextInput = styled.input`
 const SubmitButton = styled.button`
   padding: 8px 16px;
   background-color: transparent;
-  color: #666; 
+  color: #666;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 
   &:hover {
-    color: #333; 
+    color: #333;
   }
 `;
 
 const FileInput = styled.input`
-  display: none; 
+  display: none;
 `;
 
 const IconContainer = styled.label`
@@ -43,46 +44,65 @@ const IconContainer = styled.label`
   cursor: pointer;
 `;
 
-const CommentText = styled.p`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
 const CommentForm = ({ onAddComment }) => {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
-  const [showFullText, setShowFullText] = useState(false);
 
   const handleTextChange = (e) => setText(e.target.value);
-  const handleFileChange = (e) => setFile(e.target.files[0]);
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (validateFile(selectedFile)) {
+      setFile(selectedFile);
+    } else {
+      alert("올바른 파일 형식을 선택하세요. (jpg, png, gif)");
+    }
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAddComment(text, file);
+    if (file) {
+      submitComment(text, file);
+    } else {
+      onAddComment(text);
+    }
     setText("");
     setFile(null);
   };
 
-  const toggleTextVisibility = () => {
-    setShowFullText(!showFullText);
+  const validateFile = (file) => {
+    if (!file) return false;
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+    const extension = file.name.split('.').pop().toLowerCase();
+    return allowedExtensions.includes(extension);
   };
 
   return (
     <FormContainer onSubmit={handleSubmit}>
-      <TextInput type="text" placeholder="댓글을 입력하세요." value={text} onChange={handleTextChange} />
-      <IconContainer>
-        <FontAwesomeIcon icon={faImage} size="lg" /> 
-        <FileInput type="file" onChange={handleFileChange} />
+      <TextInput type="text" placeholder="텍스트를 입력하세요." value={text} onChange={handleTextChange} />
+      <IconContainer htmlFor="file-input">
+        <FontAwesomeIcon icon={faImage} size="lg" />
+        <FileInput id="file-input" type="file" onChange={handleFileChange} />
       </IconContainer>
       <SubmitButton type="submit">Post</SubmitButton>
-      <CommentText onClick={toggleTextVisibility}>
-        {text.length > 20 && !showFullText ? text.slice(0, 20) + "..." : text}
-        {text.length > 20 && !showFullText && <span>더보기</span>}
-        {showFullText && text}
-      </CommentText>
     </FormContainer>
   );
+};
+
+const submitComment = async (text, file) => {
+  const formData = new FormData();
+  formData.append('text', text);
+  formData.append('file', file);
+
+  try {
+    const response = await axios.post('http://localhost:8092/api/comments', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log('Server Response:', response);
+  } catch (error) {
+    console.error('Error posting comment:', error);
+  }
 };
 
 CommentForm.propTypes = {
