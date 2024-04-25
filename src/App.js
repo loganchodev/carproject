@@ -5,6 +5,7 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import VideoBackground from './components/video/VideoBackground';
 import Slogan from './components/slogan/Slogan';
+import ChatApp from "./components/chatgpt/ChatApp";
 import Dashboard from './components/dashboard/Dashboard';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/aboutus" element={<Aboutus />} />
             <Route path="/nearby" element={<Nearby />} />
+            <Route path="/chatapp" element={<PrivateRoute element={<ChatApp />} isAuthenticated={isAuthenticated} />} />
             <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} isAuthenticated={isAuthenticated} />} />
             <Route path="/mypage" element={<PrivateRoute element={<PasswordEntry />} isAuthenticated={isAuthenticated} />} />
             <Route path="/userinfo" element={<PrivateRoute element={<MyPage />} isAuthenticated={isAuthenticated} />} />
