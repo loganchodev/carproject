@@ -90,18 +90,28 @@ function ChatApp() {
 
   const handleSend = async () => {
     if (!inputText.trim()) return;
-    const newMessages = [...messages, { text: inputText, sender: 'user' }];
-    setMessages(newMessages);
+    
+    const newMessage = { text: inputText, sender: 'user' };
+    setMessages(prevMessages => [...prevMessages, newMessage]);
     setInputText('');
-
+    
     try {
       const response = await axios.post('http://localhost:5000/api/chat', { text: inputText });
-      setMessages([...newMessages, { text: response.data.message, sender: 'gpt' }]);
+      const responseData = response.data;
+      console.log('Received response from server:', responseData);
+      
+      if (responseData && responseData.message) {
+        const gptMessage = responseData.message;
+        setMessages(prevMessages => [...prevMessages, { text: gptMessage, sender: 'gpt' }]);
+      } else {
+        throw new Error('Invalid server response');
+      }
     } catch (error) {
-      setMessages([...newMessages, { text: 'Failed to fetch response from server.', sender: 'gpt' }]);
-    }
+      console.error('Error while fetching response from server:', error);
+      setMessages(prevMessages => [...prevMessages, { text: 'Failed to fetch response from server.', sender: 'gpt' }]);
+    }    
   };
-
+  
   return (
     <Container>
       <ChatBox>
@@ -115,7 +125,7 @@ function ChatApp() {
         <InputContainer>
           <Input
             type="text"
-            placeholder="Type your message here..."
+            placeholder="차에 대해 궁금한 점을 물어보세요."
             value={inputText}
             onChange={e => setInputText(e.target.value)}
             onKeyPress={e => e.key === 'Enter' && handleSend()}
