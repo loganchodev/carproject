@@ -32,16 +32,24 @@ const Logo = styled.div`
 
 const NavLinks = styled.div`
   a {
-    color: rgb(191, 193, 194);
+    color: gray;
     margin-left: 20px;
     font-size: 16px;
     text-decoration: none;
     &:hover {
-      color: gray;
+      color: rgb(191, 193, 194);
     }
 
     &:nth-last-child(3) {
       margin-right: 50px; 
+    }
+  }
+
+  a:nth-last-child(1),
+  a:nth-last-child(2) {
+    color: rgb(170, 170, 170);
+    &:hover {
+      color: gray;
     }
   }
 `;
@@ -75,21 +83,20 @@ const Header = () => {
           <Link to="/" />
         </Logo>
         <NavLinks>
-          <Link to="/aboutus">About us</Link>
-          <Link to="/nearby">Nearby</Link>
-          <Link to="/vehicles">Vehicles</Link>
-          <Link to="/services">Services</Link>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/customers">Customers</Link>
+          <Link to="/aboutus">사이트소개</Link>
+          <Link to="/chatapp">AI채팅</Link>
+          <Link to="/nearby">내주변검색</Link>
+          <Link to="/vehicles">모두의차고</Link>
+          <Link to="/dashboard">대시보드</Link>
           {isLoggedIn ? (
             <>
-              <Link to="/" onClick={handleLogoutClick}>Logout</Link>
-              <Link to="/mypage">MyPage</Link>
+              <Link to="/" onClick={handleLogoutClick}>로그아웃</Link>
+              <Link to="/mypage">마이페이지</Link>
             </>
           ) : (
             <>
-              <Link to="/login" onClick={handleLoginClick}>Login</Link>
-              <Link to="/signup">Sign Up</Link>
+              <Link to="/login" onClick={handleLoginClick}>로그인</Link>
+              <Link to="/signup">회원가입</Link>
             </>
           )}
         </NavLinks>

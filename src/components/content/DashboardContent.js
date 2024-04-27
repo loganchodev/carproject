@@ -11,19 +11,19 @@ const DashboardContent = ({ activeNav }) => {
   let content;
   switch (activeNav) {
     case '/dashboard':
-      content = <h1>Dashboard</h1>;
+      content = <h1>대시보드</h1>;
       break;
     case '/vehiclelist':
-      content = <h1>Vehicle List</h1>;
+      content = <h1>차고</h1>;
       break;
     case '/maintenance':
-      content = <h1>Maintenance</h1>;
+      content = <h1>정비</h1>;
       break;
     case '/settings':
-      content = <h1>Settings</h1>;
+      content = <h1>설정</h1>;
       break;
     default:
-      content = <h1>Dashboard</h1>; 
+      content = <h1>대시보드</h1>; 
   }
 
   return <StyledDashboardContent>{content}</StyledDashboardContent>;
