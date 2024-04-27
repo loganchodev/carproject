@@ -9,6 +9,8 @@ import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { computeDistanceBetween } from "spherical-geometry-js";
 
+const googleMapsLibraries = ["places"];
+
 const MapContainer = styled.div`
   display: flex;
   height: 80vh;
@@ -46,10 +48,10 @@ const Menu = styled.div`
   display: flex;
 `;
 
-const PlaceList = styled.div`
+const PlaceListContainer = styled.div`
   margin-bottom: 20px;
   padding: 10px;
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-color: #f4f5f7; 
   box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
 `;
 
@@ -104,7 +106,6 @@ function reducer(state, action) {
 function MapComponent() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { location, places, loading, selectedPlace, selectedCategory } = state;
-  const googleMapsLibraries = ["places"];
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -178,6 +179,7 @@ function MapComponent() {
     <LoadScript
       googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
       libraries={googleMapsLibraries}
+      async 
     >
       <MapContainer>
         {loading ? (
@@ -243,7 +245,7 @@ function MapComponent() {
                   세차장
                 </MenuItem>
               </Menu>
-              <PlaceList backgroundColor="#f4f5f7">
+              <PlaceListContainer> {/* Changed PlaceList to PlaceListContainer */}
                 {places.map((place, index) => (
                   <PlaceItem
                     key={index}
@@ -256,7 +258,7 @@ function MapComponent() {
                     </PlaceDetails>
                   </PlaceItem>
                 ))}
-              </PlaceList>
+              </PlaceListContainer>
             </Sidebar>
           </>
         )}

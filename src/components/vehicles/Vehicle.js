@@ -14,12 +14,12 @@ const Container = styled.div`
 
 const Vehicle = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [selectedImage, setSelectedImage] = useState('/images/dashboard.jpg'); 
+  const [selectedImage, setSelectedImage] = useState('/images/vehicle-2.jpg'); 
   const [activeNav, setActiveNav] = useState('/dashboard');
 
   const navItems = [
-    { path: '/vehicle', image: '/images/dashboard.jpg', text: '자동차', icon: <MdDirectionsCar /> }, 
-    { path: '/vehicledetail', image: '/images/vehicle-1.jpg', text: '차량상세', icon: <MdInfo /> },
+    { path: '/vehicle', image: '/images/vehicle-2.jpg', text: '자동차', icon: <MdDirectionsCar /> }, 
+    { path: '/vehicledetail', image: '/images/vehicle_info.jpg', text: '차량상세', icon: <MdInfo /> },
   ];
 
   const handleNavClick = (path, image, event) => {

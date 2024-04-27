@@ -35,6 +35,15 @@ const KakaoButton = styled(ImageButton)`
   }
 `;
 
+const NaverButton = styled(ImageButton)`
+  img {
+    width: 188px;
+    height: 40px; 
+    object-fit: cover; 
+    border-radius: 3px;
+  }
+`;
+
 const Divider = styled.div`
   display: flex;
   align-items: center;
@@ -81,6 +90,9 @@ const OAuthLogin = () => {
       <KakaoButton onClick={() => handleLogin('kakao')}>
         <img src="/images/kakao_login_large_narrow.png" alt="Kakao login" />
       </KakaoButton>
+      <NaverButton onClick={() => handleLogin('kakao')}>
+        <img src="/images/btnW_official.png" alt="Kakao login" />
+      </NaverButton>
     </Container>
   );
 };

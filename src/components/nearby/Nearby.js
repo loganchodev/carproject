@@ -6,6 +6,7 @@ import NavItem from '../sidenav/NavItem';
 import ToggleButton from '../sidenav/ToggleButton';
 import MapComponent from '../content/MapComponent';
 import NearbyContent from '../content/NearbyContent';
+import CircularProgress from '@mui/material/CircularProgress'; 
 
 const Container = styled.div`
   display: flex;
@@ -27,12 +28,21 @@ const MapContainer = styled.div`
   background: white;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden; 
+  position: relative; 
+`;
+
+const LoadingOverlay = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const Nearby = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [selectedImage, setSelectedImage] = useState('/images/nearby.jpg'); 
   const [activeNav, setActiveNav] = useState('/nearby');
+  const [loading, setLoading] = useState(false); 
 
   const handleNavClick = (path, image, event) => {
     event.preventDefault(); 
@@ -57,7 +67,12 @@ const Nearby = () => {
       <ContentArea>
         <NearbyContent activeNav={activeNav} />
         <MapContainer>
-          <MapComponent />
+          {loading && ( 
+            <LoadingOverlay>
+              <CircularProgress />
+            </LoadingOverlay>
+          )}
+          <MapComponent setLoading={setLoading} /> 
         </MapContainer>
       </ContentArea>
     </Container>

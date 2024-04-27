@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
 const fadeInSlogan = keyframes`
@@ -36,11 +36,12 @@ const SloganText = styled.span`
 `;
 
 const Slogan = () => {
-  const slogans = [
+  const slogans = useMemo(() => [
     "Expert Care, Exceptional Repair.",
     "Quality Service, Whenever you want.",
     "Convenient Inquiry, For you."
-  ];
+  ], []); 
+
   const [currentSlogan, setCurrentSlogan] = useState(slogans[0]);
   const [index, setIndex] = useState(0);
   const [animate, setAnimate] = useState(true);
@@ -57,7 +58,7 @@ const Slogan = () => {
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [index, slogans]);
+  }, [index, slogans]); 
 
   return (
     <SloganContainer>

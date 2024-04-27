@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css, keyframes } from 'styled-components';
-import { useInView } from 'react-intersection-observer';
+import styled, { keyframes } from 'styled-components';
 
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
-
-const bounce = keyframes`
+const bounceAnimation = keyframes`
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-20px); }
 `;
@@ -48,22 +42,27 @@ const TitleBackground = styled.div`
   animation: ${scrollMove} 2s forwards;
 `;
 
-const TitleStyled = styled.span`
+const filteredProps = ['animate', 'delay'];
+
+const TitleStyled = styled(({ animate, delay, ...rest }) => <span {...rest} />).withConfig({
+  shouldForwardProp: (prop, defaultValidatorFn) =>
+    !filteredProps.includes(prop) && defaultValidatorFn(prop),
+})`
   display: inline-block;
   margin: 0 2px;
-  animation: ${bounce} 0.5s forwards;
+  animation: ${bounceAnimation} 0.5s forwards;
   animation-delay: ${props => props.delay}s;
   animation-iteration-count: 1;
   font-size: 48px;
   color: #fff;
 `;
 
-const Title = ({ text }) => {
+const Title = ({ text, delay }) => {
   const letters = text.split('');
   return (
     <h1 style={{ display: 'flex', justifyContent: 'center' }}>
       {letters.map((letter, index) => (
-        <TitleStyled key={index} delay={index * 0.05}>
+        <TitleStyled key={index} style={{ animationDelay: `${delay + index * 0.1}s` }}>
           {letter}
         </TitleStyled>
       ))}
@@ -74,7 +73,7 @@ const Title = ({ text }) => {
 const SubTitle = styled.h2`
   font-size: 24px;
   color: #333;
-  margin-top: 30px;
+  margin-top: 40px;
   text-align: center;
 `;
 
@@ -88,11 +87,6 @@ const Paragraph = styled.p`
 `;
 
 const Aboutus = () => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.5,
-  });
-
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -101,12 +95,12 @@ const Aboutus = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, []);  
 
   return (
     <IntroContainer>
       <TitleBackground>
-        <Title text="About Us" />
+        <Title text="About Us" delay={0} />
       </TitleBackground>
       <SubTitle>마카롱에 오신 것을 환영합니다.</SubTitle>
       <Paragraph>
