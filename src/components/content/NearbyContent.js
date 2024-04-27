@@ -23,7 +23,7 @@ const Line = styled.hr`
 const NearbyContent = () => {
   return (
     <StyledNearbyContent>
-      <Title>Nearby</Title>
+      <Title>내주변검색</Title>
       <Line />
     </StyledNearbyContent>
   );

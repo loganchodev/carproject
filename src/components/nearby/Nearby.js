@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FiHome, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiNavigation, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import SideNav from '../sidenav/SideNav';
 import NavItem from '../sidenav/NavItem';
 import ToggleButton from '../sidenav/ToggleButton';
@@ -48,7 +48,7 @@ const Nearby = () => {
     <Container>
       <SideNav isOpen={isOpen} image={selectedImage}>
         <NavItem to="/nearby" className={activeNav === '/nearby' ? 'active' : ''} isOpen={isOpen} onClick={(e) => handleNavClick('/nearby', '/images/nearby.jpg', e)}>
-          <FiHome /> {isOpen && 'Nearby'}
+          <FiNavigation /> {isOpen && '내주변검색'}
         </NavItem>
         <ToggleButton onClick={toggleSidebar}>
           {isOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}

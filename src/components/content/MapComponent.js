@@ -231,6 +231,12 @@ function MapComponent() {
                   서비스센터
                 </MenuItem>
                 <MenuItem
+                  selected={selectedCategory === "parking"}
+                  onClick={() => handleCategoryChange("parking")}
+                >
+                  주차장
+                </MenuItem>
+                <MenuItem
                   selected={selectedCategory === "car_wash"}
                   onClick={() => handleCategoryChange("car_wash")}
                 >

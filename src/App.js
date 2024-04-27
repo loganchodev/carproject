@@ -15,6 +15,7 @@ import PasswordEntry from './components/auth/PasswordEntry';
 import Nearby from './components/nearby/Nearby';
 import Aboutus from './components/aboutus/Aboutus';
 import Start from './components/start/Start'; 
+import Vehicle from './components/vehicles/Vehicle'; 
 
 function App() {
   const [loading, setLoading] = useState(true); 
@@ -44,6 +45,7 @@ function App() {
             <Route path="/aboutus" element={<Aboutus />} />
             <Route path="/nearby" element={<Nearby />} />
             <Route path="/chatapp" element={<PrivateRoute element={<ChatApp />} isAuthenticated={isAuthenticated} />} />
+            <Route path="/vehicles" element={<PrivateRoute element={<Vehicle />} isAuthenticated={isAuthenticated} />} />
             <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} isAuthenticated={isAuthenticated} />} />
             <Route path="/mypage" element={<PrivateRoute element={<PasswordEntry />} isAuthenticated={isAuthenticated} />} />
             <Route path="/userinfo" element={<PrivateRoute element={<MyPage />} isAuthenticated={isAuthenticated} />} />

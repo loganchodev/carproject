@@ -18,7 +18,7 @@ const Dashboard = () => {
 
   const navItems = [
     { path: '/dashboard', image: '/images/dashboard.jpg', text: '대시보드', icon: <FiHome /> },
-    { path: '/vehiclelist', image: '/images/vehicle-1.jpg', text: '차고', icon: <FiList /> },
+    { path: '/vehiclelist', image: '/images/vehicle-1.jpg', text: '내차리스트', icon: <FiList /> },
     { path: '/maintenance', image: '/images/maintenance-1.jpg', text: '정비', icon: <FiTool /> },
     { path: '/settings', image: '/images/setting-1.jpg', text: '설정', icon: <FiSettings /> }
   ];
