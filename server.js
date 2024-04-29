@@ -1,7 +1,9 @@
-require('dotenv').config();
-const express = require('express');
-const fetch = require('node-fetch');
-const cors = require('cors');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const dotenv = require("dotenv");
+dotenv.config();
+const express = require("express");
+const fetch = require("node-fetch");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,7 +34,7 @@ app.post('/api/chat', async (req, res) => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get response from GPT API');
+      throw new Error(`Failed to get response from GPT API: ${response.status} - ${response.statusText}`);
     }
 
     const responseData = await response.json();
@@ -46,59 +48,91 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-app.post('/api/vehicle', async (req, res) => {
+app.post("/api/vehicle", async (req, res) => {
   const { model, year } = req.body;
   console.log(`Vehicle model and year requested: ${model} ${year}`);
 
   try {
-    const vertexApiKey = process.env.VERTEX_API_KEY;
-    const apiUrl = 'https://asia-northeast3-aiplatform.googleapis.com/v1/projects/focal-time-421105/locations/asia-northeast3/publishers/google/models/gemini-1.5-pro:streamGenerateContent';
+    const REGION = "asia-northeast3";
+    const PROJECT_ID = "focal-time-421105";
+    const MODEL_NAME = "gemini-1.5-pro";
+    const API_KEY = process.env.GENERATIVE_AI_API_KEY;
 
-    const requestBody = {
-      inputs: {
-        text: `${year}년 ${model} 차량 정보`
-      }
-    };
+    const apiUrl = `https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/publishers/google/models/${MODEL_NAME}:streamGenerateContent`;
 
-    console.log('Sending request to Vertex AI...');
+    console.log("Requesting Vertex AI...");
+
     const response = await fetch(apiUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Authorization: `Bearer ${vertexApiKey}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({
+        instances: [
+          {
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    text: `${year}년 ${model} 차량 정보`,
+                  },
+                ],
+              },
+            ],
+            systemInstruction: {
+              role: "assistant",
+              parts: [
+                {
+                  text: "This assistant searches for topics related to cars and understands Korean.",
+                },
+              ],
+            },
+            generationConfig: {
+              temperature: 0.8,
+              topP: 1,
+              topK: 50,
+              candidateCount: 10,
+              maxOutputTokens: 200,
+              stopSequences: ["\n"],
+              responseMimeType: "text/plain",
+            },
+          },
+        ],
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Vertex AI response failed: ${response.status} - ${response.statusText}`);
+      throw new Error(`Vertex AI response failure: ${response.status} - ${response.statusText}`);
     }
 
     const textResponse = await response.text();
-    console.log('Response text:', textResponse);
+    console.log("Response text:", textResponse);
     const responseData = JSON.parse(textResponse);
     const predictions = responseData.predictions[0].outputs.text;
     const vehicleInfo = parseCarInfo(predictions);
-    console.log('Parsed vehicle info:', vehicleInfo);
+    console.log("Parsed vehicle information:", vehicleInfo);
     res.json(vehicleInfo);
   } catch (error) {
-    console.error('Error during Vertex AI request:', error);
+    console.error("Error during Vertex AI request:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
 function parseCarInfo(text) {
-  const regex = /((?:[가-힣]+\s*)+)\s*(\d{4})\s*년형\s*(.*?)가격\s*(\d{1,8})원\s*(.*?)\s*엔진\s*(.*?)\s*변속기\s*(.*?)\s*연비\s*(.*?)/g;
+  const regex = /((?:[가-힣]+\s*)+)\s*(\d{4})년형\s*(.*?)가격\s*(\d{1,8})원\s*(.*?)\s*엔진\s*(.*?)\s*변속기\s*(.*?)\s*연비\s*(.*?)/g;
   const match = regex.exec(text);
   if (match) {
     return {
       model: match[1].trim(),
-      price: parseInt(match[4].replace(/,/g, '')),
+      year: parseInt(match[2]), 
+      price: parseInt(match[4].replace(/,/g, "")),
       specs: {
         engine: match[6].trim(),
         transmission: match[7].trim(),
-        fuelEconomy: match[8].trim()
-      }
+        fuelEconomy: match[8].trim(),
+      },
     };
   }
   return null;

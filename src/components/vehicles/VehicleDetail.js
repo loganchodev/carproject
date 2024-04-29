@@ -104,17 +104,17 @@ function VehicleDetail() {
     const [error, setError] = useState('');
 
     const handleSearch = async (event) => {
-        event.preventDefault();
-        setError('');
-        try {
-            const response = await axios.post('http://localhost:5000/api/vehicle', { model, year });
-            setVehicle(response.data);
-        } catch (error) {
-            console.error('Error fetching vehicle data:', error);
-            setError('Failed to fetch data. Please try again.');
-        }
+      event.preventDefault();
+      setError('');
+      try {
+          const response = await axios.post('http://localhost:5000/api/vehicle', { model, year });
+          setVehicle(response.data);
+      } catch (error) {
+          console.error('차량 데이터를 불러오는 중 오류 발생:', error);
+          setError('데이터를 불러오는데 실패했습니다. 다시 시도해 주세요.');
+      }
     };
-
+  
     return (
         <Container>
             <ContentArea>
@@ -122,7 +122,7 @@ function VehicleDetail() {
                     <InputSection>
                         <Input type="text" placeholder="Model" value={model} onChange={e => setModel(e.target.value)} />
                         <Input type="text" placeholder="Year" value={year} onChange={e => setYear(e.target.value)} />
-                        <Button type="submit">Search</Button> 
+                        <Button type="submit">조회</Button> 
                         {error && <p>{error}</p>}
                     </InputSection>
                 </form>
