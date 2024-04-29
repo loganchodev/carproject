@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import VehicleDetail from '../vehicles/VehicleDetail';
 
 const StyledVehicleContent = styled.div`
   flex-grow: 1;
@@ -13,14 +14,19 @@ const VehicleContent = ({ activeNav }) => {
     case '/vehicle':
       content = <h1>자동차</h1>;
       break;
-    case '/vehicledatail':
+    case '/vehicledetail':
       content = <h1>차량상세</h1>;
       break;
     default:
       content = <h1>자동차</h1>; 
   }
 
-  return <StyledVehicleContent>{content}</StyledVehicleContent>;
+  return (
+    <StyledVehicleContent>
+      {content}
+      {activeNav === '/vehicledetail' && <VehicleDetail />}
+    </StyledVehicleContent>
+  );
 };
 
 export default VehicleContent;

@@ -15,7 +15,7 @@ const Container = styled.div`
 const Vehicle = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [selectedImage, setSelectedImage] = useState('/images/vehicle-2.jpg'); 
-  const [activeNav, setActiveNav] = useState('/dashboard');
+  const [activeNav, setActiveNav] = useState('/vehicle');
 
   const navItems = [
     { path: '/vehicle', image: '/images/vehicle-2.jpg', text: '자동차', icon: <MdDirectionsCar /> }, 
