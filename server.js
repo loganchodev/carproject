@@ -92,7 +92,7 @@ app.post("/api/vehicle", async (req, res) => {
         systemInstruction: {
           role: "assistant",
           parts: [{
-            text: "사용자가 입력한 차량 연식과 모델에 따른 차량 제원(차량설명, 가격, 연료, 연비, 제조사, 차종, 안전 등급을 포함하여 기타 자동차 제원을 최대한 자세하게)을 JSON 형식으로 한국어로 응답."
+            text: "사용자가 입력한 차량 연식과 모델에 따른 차량 제원(차량설명, 가격, 연료, 연비, 제조사, 차종, 안전 등급을 포함하여 기타 자동차 제원을 최대한 자세하게)을 키와 값 형식으로 한국어로 응답."
           }]
         },
         generationConfig: {
@@ -133,32 +133,40 @@ function parseVehicleSpecsFromResponse(responseData) {
   let specs = {};
 
   responseData.forEach(data => {
-    const candidate = data.candidates[0];
+    const candidate = data.candidates[0]; // 후보 요소 중 첫 번째 요소 선택
 
+    // content.parts 배열을 합쳐서 하나의 텍스트로 만든다.
     const contentText = candidate.content.parts.reduce((text, part) => text + part.text, "");
-
+    console.log(contentText); 
+    // 만약 contentText가 JSON 형식으로 시작하고 끝나지 않는다면,
     if (contentText.startsWith('{') && contentText.endsWith('}')) {
       try {
+        // JSON 형식일 경우 JSON으로 파싱하여 specs 객체에 병합한다.
         const jsonContent = JSON.parse(contentText);
         Object.assign(specs, jsonContent);
 
       } catch (error) {
+        // JSON 파싱 에러 발생 시 콘솔에 로그 출력
         console.error('Error parsing JSON:', error);
       }
     } else {
+      // JSON 형식이 아닌 경우 줄바꿈을 공백으로 대체하고 각 키-값 쌍을 추출하여 객체로 반환한다.
       const keyValuePairs = contentText.split('\n').map(line => {
-        const [key, ...value] = line.split(':'); // 수정
+        const [key, ...value] = line.split(':');
         const trimmedKey = key.trim();
-        const trimmedValue = value.join(':').trim(); // 수정
-        return trimmedKey && trimmedValue ? { [trimmedKey]: trimmedValue } : {}; // 수정
-      });
-
+        const trimmedValue = value.join(':').replace(/\n/g, " ").trim(); // 줄바꿈을 공백으로 대체하고 공백 제거
+        return trimmedKey && trimmedValue ? { [trimmedKey]: trimmedValue } : {};
+      });      
+      
+      // specs 객체에 추출된 키-값 쌍을 병합한다.
       Object.assign(specs, ...keyValuePairs);
     }
   });
 
+  // 완성된 specs 객체 반환
+  console.log(specs);
   return specs;
 }
 
-
+// 서버를 지정된 포트로 실행
 app.listen(PORT, () => console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`));

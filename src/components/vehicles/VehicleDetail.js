@@ -10,7 +10,7 @@ const Container = styled.div`
   padding: 20px;
   background: #f0f0f0;
   height: 80%;
-  overflow-y: hidden;
+  overflow-y: auto;
 `;
 
 const Form = styled.form`
