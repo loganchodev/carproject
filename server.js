@@ -92,15 +92,15 @@ app.post("/api/vehicle", async (req, res) => {
         systemInstruction: {
           role: "assistant",
           parts: [{
-            text: "차량 연식과 모델에 따른 정보를 키-값 쌍의 JSON 형식으로 반환하여 주세요. 예를 들어, { '가격': '3000만원', '연료': '가솔린', '연비': '10km/l', '제조사': '현대', '차종': '세단', '안전 등급': '5등급' }"
+            text: "사용자가 입력한 차량 연식과 모델에 따른 차량 제원(차량설명, 가격, 연료, 연비, 제조사, 차종, 안전 등급을 포함하여 기타 자동차 제원을 최대한 자세하게)을 JSON 형식으로 한국어로 응답."
           }]
         },
         generationConfig: {
-          temperature: 0.5,
-          topP: 0.9,
-          topK: 20,
+          temperature: 0.1,
+          topP: 1,
+          topK: 10,
           candidateCount: 1,
-          maxOutputTokens: 1024,
+          maxOutputTokens: 2048,
           stopSequences: [],
           responseMimeType: "application/json",
         }
@@ -133,31 +133,32 @@ function parseVehicleSpecsFromResponse(responseData) {
   let specs = {};
 
   responseData.forEach(data => {
-    data.candidates.forEach(candidate => {
-      candidate.content.parts.forEach(part => {
-        const text = part.text.trim();
+    const candidate = data.candidates[0];
 
-        if (text.startsWith('{') && text.endsWith('}')) {
-          try {
-            const jsonContent = JSON.parse(text);
-            Object.assign(specs, jsonContent);
-          } catch (error) {
-            console.error('Error parsing JSON:', error);
-          }
-        } else {
-          const lines = text.split('\n');
-          lines.forEach(line => {
-            const [key, value] = line.split(':');
-            if (key && value) {
-              specs[key.trim()] = value.trim();
-            }
-          });
-        }
+    const contentText = candidate.content.parts.reduce((text, part) => text + part.text, "");
+
+    if (contentText.startsWith('{') && contentText.endsWith('}')) {
+      try {
+        const jsonContent = JSON.parse(contentText);
+        Object.assign(specs, jsonContent);
+
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+      }
+    } else {
+      const keyValuePairs = contentText.split('\n').map(line => {
+        const [key, ...value] = line.split(':'); // 수정
+        const trimmedKey = key.trim();
+        const trimmedValue = value.join(':').trim(); // 수정
+        return trimmedKey && trimmedValue ? { [trimmedKey]: trimmedValue } : {}; // 수정
       });
-    });
+
+      Object.assign(specs, ...keyValuePairs);
+    }
   });
 
   return specs;
 }
+
 
 app.listen(PORT, () => console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`));

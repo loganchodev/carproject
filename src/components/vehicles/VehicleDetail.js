@@ -10,6 +10,7 @@ const Container = styled.div`
   padding: 20px;
   background: #f0f0f0;
   height: 80%;
+  overflow-y: hidden;
 `;
 
 const Form = styled.form`
@@ -61,23 +62,44 @@ const LoadingContainer = styled.div`
   height: 200px;
 `;
 
+const Table = styled.table`
+  width: 70%;
+  height: 500px;
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow-y: auto; 
+`;
+
+const TableHeader = styled.th`
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #ddd;
+  text-align: center; 
+`;
+
+const TableCell = styled.td`
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center; 
+`;
+
 function VehicleDetail() {
   const [model, setModel] = useState('');
   const [year, setYear] = useState('');
-  const [vehicleDetails, setVehicleDetails] = useState('');
+  const [vehicleDetails, setVehicleDetails] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async (event) => {
     event.preventDefault();
     setError('');
-    setVehicleDetails('');
+    setVehicleDetails(null);
     setLoading(true); 
     try {
       const response = await axios.post('http://localhost:5000/api/vehicle', { model, year });
       if (response.data && response.status === 200) {
-        const formattedText = formatData(response.data);
-        setVehicleDetails(formattedText);
+        setVehicleDetails(response.data.vehicleSpecs);
       } else {
         setError('No vehicle information found. Please check the input details.');
       }
@@ -89,25 +111,6 @@ function VehicleDetail() {
     }
   };
 
-  const formatData = (data) => {
-    if (data && data.vehicleSpecs) {
-      const vehicleSpecs = data.vehicleSpecs;
-      let formattedText = '';
-  
-      for (const key in vehicleSpecs) {
-        if (Object.hasOwnProperty.call(vehicleSpecs, key)) {
-          const value = vehicleSpecs[key];
-          formattedText += `${key}: ${value}\n`;
-        }
-      }
-      
-      return formattedText;
-    } else {
-      console.log('응답 데이터:', data); 
-      return 'No vehicle information found.';
-    }
-  };  
-  
   return (
     <Container>
       <Form onSubmit={handleSearch}>
@@ -132,7 +135,24 @@ function VehicleDetail() {
       ) : (
         <>
           {error && <TextDisplay>{error}</TextDisplay>}
-          {vehicleDetails && <TextDisplay>{vehicleDetails}</TextDisplay>}
+          {vehicleDetails && (
+            <Table>
+              <thead>
+                <tr>
+                  <TableHeader>구분</TableHeader>
+                  <TableHeader>내용</TableHeader>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(vehicleDetails).map(([key, value]) => (
+                  <tr key={key}>
+                    <TableCell>{key}</TableCell>
+                    <TableCell>{value}</TableCell>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
         </>
       )}
     </Container>
