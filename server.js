@@ -65,13 +65,14 @@ app.post("/api/vehicle", async (req, res) => {
   let statusCode = 500;
 
   try {
-    const REGION = "asia-northeast3";
+    const REGION = "asia-northeast3"; // 실제 배포 지역으로 업데이트
     const PROJECT_ID = "focal-time-421105";
     const MODEL_NAME = "gemini-1.5-pro-preview-0409";
     const auth = new GoogleAuth({
       scopes: 'https://www.googleapis.com/auth/cloud-platform'
     });
 
+    // 확인된 엔드포인트 URL 구조는 Vertex AI 문서 참조
     const apiUrl = `https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/publishers/google/models/${MODEL_NAME}:streamGenerateContent`;
 
     console.log("Vertex AI 요청...");

@@ -90,8 +90,8 @@ const OAuthLogin = () => {
       <KakaoButton onClick={() => handleLogin('kakao')}>
         <img src="/images/kakao_login_large_narrow.png" alt="Kakao login" />
       </KakaoButton>
-      <NaverButton onClick={() => handleLogin('kakao')}>
-        <img src="/images/btnW_official.png" alt="Kakao login" />
+      <NaverButton onClick={() => handleLogin('naver')}>
+        <img src="/images/btnW_official.png" alt="naver login" />
       </NaverButton>
     </Container>
   );
