@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import VehicleGarage from '../vehicles/VehicleGarage';
 import VehicleDetail from '../vehicles/VehicleDetail';
 
 const StyledVehicleContent = styled.div`
@@ -17,25 +18,22 @@ const Line = styled.hr`
 `;
 
 const VehicleContent = ({ activeNav }) => {
-  let content;
-  switch (activeNav) {
-    case '/vehicle':
-      content = <h1>모두의차고</h1>;
-      break;
-    case '/vehicledetail':
-      content = <h1>AI차량제원</h1>;
-      break;
-    default:
-      content = <h1>모두의차고</h1>; 
+  let content = <VehicleGarage />;
+  let title = '모두의차고';
+
+  if (activeNav === '/vehicledetail') {
+    content = <VehicleDetail />;
+    title = 'AI차량제원';
   }
 
   return (
     <StyledVehicleContent>
-      {content}
+      <h1>{title}</h1>
       <Line />
-      {activeNav === '/vehicledetail' && <VehicleDetail />}
+      {content}
     </StyledVehicleContent>
   );
 };
+
 
 export default VehicleContent;

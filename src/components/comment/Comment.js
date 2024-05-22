@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const CommentContainer = styled.div`
-  width: 100%;
+  width: 800px;
   padding: 10px;
   background-color: #fff;
   border-radius: 5px;

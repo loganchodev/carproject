@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 
 const CommentMain = () => {
@@ -63,7 +62,6 @@ const CommentMain = () => {
 
   return (
     <div style={{ width: "500px" }}>
-      <CommentForm onAddComment={handleAddComment} />
       {comments.map((comment) => (
         <Comment key={comment.id} comment={comment} /> 
       ))}

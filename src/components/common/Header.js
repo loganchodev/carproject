@@ -87,7 +87,6 @@ const Header = () => {
           <Link to="/chatapp">AI채팅</Link>
           <Link to="/nearby">내주변검색</Link>
           <Link to="/vehicles">모두의차고</Link>
-          <Link to="/dashboard">대시보드</Link>
           {isLoggedIn ? (
             <>
               <Link to="/" onClick={handleLogoutClick}>로그아웃</Link>

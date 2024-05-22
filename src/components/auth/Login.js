@@ -116,7 +116,7 @@ const Login = () => {
         <Input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         {error && <ErrorMsg>{error}</ErrorMsg>}
-        <Button type="submit">Log In</Button>
+        <Button type="submit">로그인</Button>
       </LoginForm>
       <OAuthLogin />
     </LoginContainer>

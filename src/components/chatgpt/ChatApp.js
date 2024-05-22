@@ -3,14 +3,31 @@ import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import { FaPaperPlane } from "react-icons/fa";
 
+const gradientAnimation = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f9f9f9;
+  background: linear-gradient(-45deg, #e0e0e0, #c0c0c0, #e0e0e0, #c0c0c0);
+  background-size: 400% 400%;
+  animation: ${gradientAnimation} 15s ease infinite;
 `;
+
+
+
 
 const ChatBox = styled.div`
   max-width: 400px;
@@ -67,7 +84,7 @@ const Message = styled.div`
 const ProfileImage = styled.div`
   width: 40px;
   height: 40px;
-  background-image: url("/images/macaron.png");
+  background-image: url("/images/manager.png");
   background-color: rgba(255, 192, 203, 0.5);
   background-size: cover;
   background-position: center;
@@ -151,7 +168,7 @@ function ChatApp() {
   return (
     <Container>
       <ChatBox>
-        <NavBar>MyCarLong</NavBar>
+        <NavBar>MyCarLong - with ChatGPT 4.0</NavBar>
         <MessageContainer>
           {messages.map((msg, index) => (
             <div
